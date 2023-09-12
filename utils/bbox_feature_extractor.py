@@ -10,8 +10,6 @@ import torchvision.models as models
 from torchvision.models.detection import FasterRCNN_ResNet50_FPN_Weights, FasterRCNN_ResNet50_FPN_V2_Weights
 from torchvision.io import read_image
 
-from datasets/vg import sgg_generator 
-
 class BboxFeatureExtractor :
 
   def __init__(self) :
