@@ -76,8 +76,8 @@ def get_scene_graph(vg_sgg, img_idx) :
     ith_e = vg_sgg['img_to_last_box'][img_idx]
     rth_s = vg_sgg['img_to_first_rel'][img_idx]
     rth_e = vg_sgg['img_to_last_rel'][img_idx]
-    num_objs = ith_e - ith_s + 1
-    num_rels = rth_e - rth_s + 1
+    num_objs = ith_e - ith_s
+    num_rels = rth_e - rth_s
     image_path = image_data[img_idx]['url']
     filename = "/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
     img = Image.open(filename)
@@ -89,9 +89,18 @@ def get_scene_graph(vg_sgg, img_idx) :
         label = vg_sgg['labels'][obj_idx]
         print(vg_sgg['boxes_1024'][obj_idx])
         print(vg_sgg['attributes'][obj_idx])
-        print(idx_to_label[str(int(label))])
+        print(label, idx_to_label[str(int(label))])
+    print('relationships *********** ', num_rels)
+    for rel_idx in range(rth_s, rth_e) :
+        print('rel num : ',rel_idx)
+        rel =vg_sgg['relationships'][rel_idx]
+        predicate = vg_sgg['predicates'][rel_idx]
+        rel1_label = vg_sgg['labels'][rel[0]]
+        rel2_label = vg_sgg['labels'][rel[1]]
+        print(rel,rel1_label,rel2_label, idx_to_label[str(int(rel1_label))], idx_to_label[str(int(rel2_label))])
+        print(predicate, vg_sgg_dicts['idx_to_predicate'][str(int(predicate))])
 
-get_scene_graph(vg_sgg, 2)
+get_scene_graph(vg_sgg, 4)
     
 #num_objs = idx_to_label[str(vg_sgg['labels'][1][0])]
 

@@ -23,3 +23,4 @@ class PredicatePredictor(nn.Module) :
         x = F.relu(self.fc(x))
         x = self.fc2(x)
         return x
+    
