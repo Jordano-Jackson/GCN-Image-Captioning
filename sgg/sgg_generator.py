@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 import random
 
 import torch
+from torch.utils.data import Dataset, DataLoader 
 import numpy as np
 import os
 import requests
@@ -81,13 +82,38 @@ def get_scene_graph(vg_sgg, img_idx) :
     filename = "/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
     img = Image.open(filename)
     img.show()
-    #print(num_objs, num_rels)
+    print(num_objs, num_rels)
+    print('active obj mask', vg_sgg['labels'])
+    for obj_idx in range(ith_s, ith_e) :
+        print('obj_idx: ', obj_idx)
+        label = vg_sgg['labels'][obj_idx]
+        print(vg_sgg['boxes_1024'][obj_idx])
+        print(vg_sgg['attributes'][obj_idx])
+        print(idx_to_label[str(int(label))])
 
-get_scene_graph(vg_sgg, 1)
+get_scene_graph(vg_sgg, 2)
     
 #num_objs = idx_to_label[str(vg_sgg['labels'][1][0])]
 
 # 2. make dataloader for object classification 
+class ObjectDetectionDataset(Dataset) :
+    def __init__(self, ):
+        self.image_data = json.load(open(os.path.join(VG_PATH, 'image_data.json')))
+        self.vg_sgg = h5py.File('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG-with-attri.h5')
+        self.vg_sgg_dicts = json.load(open('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG-dicts-with-attri.json'))
+
+
+    def __len__(self) :
+        return len(self.vg_sgg['label'].shape[0])
+    
+    def __getitem__(self, idx) :
+        None
+        #image = self.
+
+    #def binary_search_img_indices(self, obj_idx) :
+
+
+
 
 # 3. make dataloader for semantic relation prediction 
 

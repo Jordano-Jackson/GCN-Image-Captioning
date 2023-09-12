@@ -1,2 +1,15 @@
+datasets/vg/.ipynb_checkpoints
+datasets/vg/VG_100K
+datasets/vg/50
+datasets/vg/VG-SGG-with-attri.h5
+datasets/vg/VG-SGG-dicts-with-attri.json
+datasets/vg/VG-SGG-dicts.json
+datasets/vg/VG-SGG.h5
+datasets/vg/synsets.json
+datasets/vg/objects.json
+datasets/vg/obj_data.json
+datasets/vg/image_data.json
+datasets/vg/attribute_synsets.json
+datasets/vg/attributes.json
+datasets/vg/0.generate_attribute_labels.ipynb
 
-/datasets
