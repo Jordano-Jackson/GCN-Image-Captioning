@@ -1,11 +1,8 @@
 ###  predicate predictor ###
 # predict predicates between two objects
 
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader 
-import numpy as np
 
 ### todo 
 # 1. make model 
@@ -20,7 +17,7 @@ class PredicatePredictor(nn.Module) :
         self.fc2 = nn.Linear(512*3, 51)
     
     def forward(self, x) :
-        x = F.relu(self.fc(x))
+        x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
     

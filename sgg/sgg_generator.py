@@ -12,12 +12,12 @@ import os
 import requests
 from io import BytesIO
 
-VG_PATH = "/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/"
+VG_PATH = "/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/"
 
 image_data = json.load(open(os.path.join(VG_PATH, 'image_data.json')))
-vg_sgg = h5py.File('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG-with-attri.h5')
-vg_sgg_original = h5py.File('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG.h5')
-vg_sgg_dicts = json.load(open('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG-dicts-with-attri.json'))
+vg_sgg = h5py.File('/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG-SGG-with-attri.h5')
+vg_sgg_original = h5py.File('/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG-SGG.h5')
+vg_sgg_dicts = json.load(open('/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG-SGG-dicts-with-attri.json'))
 
 USE_BOX_SIZE = 1024
 
@@ -27,7 +27,7 @@ def draw_single_box(pic, box, color = (255,0,255,128)) :
     draw.rectangle(((x1,y1), (x2, y2)), outline = color)
 
 def draw_boxes(image_id, boxes) :
-    pic = Image.open("/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG_100K/{}.jpg".format(image_id))
+    pic = Image.open("/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG_100K/{}.jpg".format(image_id))
     num_obj = boxes.shape[0] 
     for i in range(num_obj) :
         draw_single_box(pic, boxes[i])
@@ -39,7 +39,7 @@ def show_box_attributes(image_data, vg_sgg, obj_attributes, vg_sgg_dicts, img_id
     if img_idx is None :
         img_idx = random.randint(0, len(image_data)-1)
     height, width = image_data[img_idx]['height'], image_data[img_idx]['width']
-    filename = "/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
+    filename = "/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
     pic = Image.open(filename)
     ith_s = vg_sgg['img_to_first_box'][img_idx]
     ith_e = vg_sgg['img_to_last_box'][img_idx]
@@ -79,8 +79,9 @@ def get_scene_graph(vg_sgg, img_idx) :
     num_objs = ith_e - ith_s
     num_rels = rth_e - rth_s
     image_path = image_data[img_idx]['url']
-    filename = "/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
-    img = Image.open(filename)
+    filename = "/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
+    img = Image.open(filename).convert("RGB")
+    print(np.shape(img))
     img.show()
     print(num_objs, num_rels)
     print('active obj mask', vg_sgg['labels'])
@@ -100,7 +101,10 @@ def get_scene_graph(vg_sgg, img_idx) :
         print(rel,rel1_label,rel2_label, idx_to_label[str(int(rel1_label))], idx_to_label[str(int(rel2_label))])
         print(predicate, vg_sgg_dicts['idx_to_predicate'][str(int(predicate))])
 
-get_scene_graph(vg_sgg, 4)
+a =  [torch.FloatTensor([[79.8867, 286.8000, 329.7450, 444.0000],[11.8980, 13.2000, 596.6006, 596.4000]])] 
+
+print(a[0].shape)
+get_scene_graph(vg_sgg, 57082) #gray : 57084 
     
 #num_objs = idx_to_label[str(vg_sgg['labels'][1][0])]
 
@@ -108,8 +112,8 @@ get_scene_graph(vg_sgg, 4)
 class ObjectDetectionDataset(Dataset) :
     def __init__(self, ):
         self.image_data = json.load(open(os.path.join(VG_PATH, 'image_data.json')))
-        self.vg_sgg = h5py.File('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG-with-attri.h5')
-        self.vg_sgg_dicts = json.load(open('/home/csjihwanh/Desktop/Projects/GCN-Image-Captioning/datasets/vg/VG-SGG-dicts-with-attri.json'))
+        self.vg_sgg = h5py.File('/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG-SGG-with-attri.h5')
+        self.vg_sgg_dicts = json.load(open('/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG-SGG-dicts-with-attri.json'))
 
 
     def __len__(self) :
