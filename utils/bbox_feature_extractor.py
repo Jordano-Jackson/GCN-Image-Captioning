@@ -17,6 +17,10 @@ class BboxFeatureExtractor :
     print("BBoxFeatureExtractor initializing... ", end='')
     self.resnet101_model = models.resnet101(weights="ResNet101_Weights.IMAGENET1K_V2")
     self.resnet101_model = self.resnet101_model.to('cuda' if torch.cuda.is_available() else 'cpu')
+    
+    # freeze parameters in ResNet model
+    for param in self.resnet101_model.parameters() :
+      param.requires_grad = False
 
     self.activation = {}
     self.resnet101_model.layer3[22].conv3.register_forward_hook(self.get_activation('Res4b22'))
