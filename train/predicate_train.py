@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 import torch 
 import torch.nn as nn
@@ -22,8 +23,11 @@ def predicate_train(model, train_loader, num_epochs, learning_rate) :
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
     bbox_extractor = BboxFeatureExtractor()
-    
+    step = 0
+
     print("Start training...")
+    start_time = time.time()
+
     for epoch in range(num_epochs) :
         total_loss = 0.0
         model.train()
@@ -48,18 +52,26 @@ def predicate_train(model, train_loader, num_epochs, learning_rate) :
             optimizer.step()
 
             total_loss += loss.item()
+            if(step % 3000 == 0) :
+                print(f"Step: {step}/{len(train_loader)} Loss: {loss:.4f} Elapsed time: {(time.time()-start_time):.2f}")
+            step+=1
 
         print(f"Epoch [{epoch + 1}/{num_epochs}] - Loss : {total_loss / len(train_loader)}")
-            
+        torch.save(predicate_model.state_dict(), 'predicate_model.pth')
+        print("model saved.")
+
     print("Training finished.")
 
 dataset = PredicateDataset()
 
 batch_size = 1
 epochs = 10
-lr= 1e-4
+lr= 2e-4
 dataloader = DataLoader(dataset, batch_size =batch_size, shuffle=True)
 
 predicate_model = PredicatePredictor()
 
 predicate_train(predicate_model, dataloader, num_epochs= 10 , learning_rate=lr)
+
+torch.save(predicate_model.state_dict(), 'predicate_model.pth')
+print("model saved.")

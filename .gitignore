@@ -12,4 +12,6 @@ datasets/vg/image_data.json
 datasets/vg/attribute_synsets.json
 datasets/vg/attributes.json
 datasets/vg/0.generate_attribute_labels.ipynb
-
+datasets/vg/scene_graphs.json
+temp
+presentation

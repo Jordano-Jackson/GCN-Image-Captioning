@@ -78,21 +78,23 @@ def get_scene_graph(vg_sgg, img_idx) :
     rth_e = vg_sgg['img_to_last_rel'][img_idx]
     num_objs = ith_e - ith_s
     num_rels = rth_e - rth_s
+    print('img id : ',image_data[img_idx]['image_id'])
+    print('num obj : ', num_objs, 'num rel : ', num_rels)
     image_path = image_data[img_idx]['url']
     filename = "/home/csjihwanh/Desktop/Projects/GCN_Image_Captioning/datasets/vg/VG_100K/{}.jpg".format(str(image_data[img_idx]['image_id']))
     img = Image.open(filename).convert("RGB")
     print(np.shape(img))
     img.show()
-    print(num_objs, num_rels)
     print('active obj mask', vg_sgg['labels'])
-    for obj_idx in range(ith_s, ith_e) :
+    for obj_idx in range(ith_s, ith_e + 1) :
         print('obj_idx: ', obj_idx)
         label = vg_sgg['labels'][obj_idx]
         print(vg_sgg['boxes_1024'][obj_idx])
+        print(vg_sgg['boxes_512'][obj_idx])
         print(vg_sgg['attributes'][obj_idx])
         print(label, idx_to_label[str(int(label))])
     print('relationships *********** ', num_rels)
-    for rel_idx in range(rth_s, rth_e) :
+    for rel_idx in range(rth_s, rth_e + 1) :
         print('rel num : ',rel_idx)
         rel =vg_sgg['relationships'][rel_idx]
         predicate = vg_sgg['predicates'][rel_idx]
@@ -102,9 +104,10 @@ def get_scene_graph(vg_sgg, img_idx) :
         print(predicate, vg_sgg_dicts['idx_to_predicate'][str(int(predicate))])
 
 a =  [torch.FloatTensor([[79.8867, 286.8000, 329.7450, 444.0000],[11.8980, 13.2000, 596.6006, 596.4000]])] 
-
+print(vg_sgg['relationships'].shape[0])
 print(a[0].shape)
-get_scene_graph(vg_sgg, 57082) #gray : 57084 
+print(len(image_data))
+get_scene_graph(vg_sgg,1590) #gray : 57084 
     
 #num_objs = idx_to_label[str(vg_sgg['labels'][1][0])]
 
